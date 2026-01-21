@@ -1,105 +1,96 @@
-// Lista de frases inspiradas en BoJack Horseman: tonos existencial, melancólico, irónico, reflexivo
-// Almacenadas en array para fácil mantenimiento; sin repeticiones hasta agotar
 const quotes = [
-    "A veces, la vida es como un frasco lleno de papeles arrugados: abres uno y esperas que diga algo profundo, pero solo es otro recordatorio de lo vacío que estás.",
-    "El éxito es genial, hasta que te das cuenta de que no llena el vacío dentro de ti. ¿O era eso el arrepentimiento?",
-    "Todos fingimos ser felices, pero en el fondo, somos solo caballos antropomórficos lidiando con traumas pasados.",
-    "La ironía de la vida: pasas años persiguiendo sueños, solo para despertar en una realidad que ni siquiera querías.",
-    "Reflexiona: ¿Cuántas veces has dicho 'estoy bien' cuando en realidad solo querías que alguien te escuchara?",
-    "En un mundo de hollywoodenses falsos, ser auténtico es el verdadero acto de rebeldía... o solo una excusa para fallar.",
-    "El tiempo pasa, los amigos se van, y al final, quedas tú solo con tus demonios internos. Saluda al club.",
-    "Ser adulto significa saber que las segundas oportunidades son raras, y las terceras, un mito."
+    { text: "Yo no me conozco. Y me da miedo que, si alguna vez lo hago, no haya nada dentro.", author: "BoJack Horseman", used: false },
+    { text: "¿Sabes cuál es el problema con los finales felices? Que o no son finales, o no son felices.", author: "BoJack Horseman", used: false },
+    { text: "No puedo decirte que todo va a mejorar, porque no lo sé. Pero sí sé que no estás solo.", author: "BoJack Horseman", used: false },
+    { text: "Necesito que me digas que soy una buena persona.", author: "BoJack Horseman", used: false },
+    { text: "A veces siento que nací con una fuga, y cualquier bondad que empiezo a sentir simplemente se escapa.", author: "BoJack Horseman", used: false },
+    { text: "A veces la vida es una mierda y luego sigues viviendo.", author: "BoJack Horseman", used: false },
+    { text: "No hay un final feliz. Solo hay la vida, y luego ya no la hay.", author: "BoJack Horseman", used: false },
+    { text: "Eres todas las cosas que están mal contigo.", author: "BoJack Horseman", used: false },
+    { text: "Siento que mi vida es solo una serie de eventos aleatorios que no significan nada.", author: "BoJack Horseman", used: false },
+    { text: "La vida es una serie de puertas que se cierran, ¿no crees?", author: "Diane Nguyen", used: false },
+    { text: "No existe el buen fondo. Solo existen las cosas que haces.", author: "Diane Nguyen", used: false },
+    { text: "Creo que hay personas que te ayudan a convertirte en quien eres y puedes estar agradecida por ello, aunque no estuvieran destinadas a estar en tu vida para siempre.", author: "Diane Nguyen", used: false },
+    { text: "Quería que mi daño fuera ‘daño bueno’. Que tuviera un propósito.", author: "Diane Nguyen", used: false },
+    { text: "Tienes que ser tú misma. Bueno, no tú misma, sino la versión de ti misma que el mundo quiere que seas.", author: "Princess Carolyn", used: false },
+    { text: "¿Sabes qué hago cuando tengo un día realmente malo? Me imagino a mi tataranieta hablando de mí en clase.", author: "Princess Carolyn", used: false },
+    { text: "No puedes seguir haciendo cosas malas y luego sentirte mal por ello como si eso ayudara. ¡Tienes que ser mejor!", author: "Todd Chavez", used: false }
 ];
 
-// Estado: Índice para selección sin repeticiones (reinicia al agotar)
-let currentIndex = -1;
-const totalQuotes = quotes.length;
-
-// Elementos DOM
 const jar = document.getElementById('jar');
 const paperOverlay = document.getElementById('paper-overlay');
 const quoteElement = document.getElementById('quote');
+const authorElement = document.getElementById('author');
 const lid = document.querySelector('.lid');
+const welcomeAudio = document.getElementById('welcome-audio');
+const initialMessage = document.getElementById('initial-message');
+let audioPlayed = false;
 
-// Manejo de errores: Logging simple para debugging (proactivo para mantenibilidad)
-console.log('Aplicación inicializada. Frases cargadas:', totalQuotes);
+function playWelcomeAudio() {
+    if (!audioPlayed) {
+        welcomeAudio.play().then(() => {
+            audioPlayed = true;
+        }).catch(error => {
+            console.error('Error al reproducir audio:', error);
+        });
+    }
+}
 
-// Función para seleccionar y mostrar frase aleatoria sin repetición
-function showRandomQuote() {
+window.addEventListener('load', () => {
+    playWelcomeAudio();
+    setTimeout(() => {
+        initialMessage.style.display = 'none';
+    }, 5000);
+});
+
+function getRandomQuote() {
+    const availableQuotes = quotes.filter(q => !q.used);
+    if (availableQuotes.length === 0) {
+        quotes.forEach(q => q.used = false);
+        return getRandomQuote();
+    }
+    const randomIndex = Math.floor(Math.random() * availableQuotes.length);
+    const selected = availableQuotes[randomIndex];
+    quotes.find(q => q.text === selected.text).used = true;
+    return selected;
+}
+
+function showQuote() {
+    if (!audioPlayed) {
+        playWelcomeAudio();
+    }
     try {
-        if (quotes.length === 0) {
-            throw new Error('Lista de frases agotada');
-        }
-        // Selección aleatoria del índice restante
-        const availableIndices = [];
-        for (let i = 0; i < totalQuotes; i++) {
-            if (!quotes[i].used) availableIndices.push(i); // Marcar como used temporalmente? Mejor shuffle simple
-        }
-        if (availableIndices.length === 0) {
-            // Reiniciar lista si se agotó (edge case)
-            quotes.forEach(q => q.used = false);
-            currentIndex = -1;
-            console.log('Lista de frases reiniciada');
-        }
-        // Simple pop aleatorio: shuffle y tomar primero (eficiente para listas pequeñas)
-        const shuffled = [...availableIndices].sort(() => Math.random() - 0.5);
-        const selectedIndex = shuffled[0];
-        currentIndex = selectedIndex;
-        quotes[selectedIndex].used = true; // Marcar (agregar prop used si no existe)
-        if (!quotes[selectedIndex].hasOwnProperty('used')) quotes[selectedIndex].used = true;
-
-        // Actualizar DOM
-        quoteElement.textContent = quotes[selectedIndex].text || quotes[selectedIndex]; // Soporte para objetos o strings
+        const { text, author } = getRandomQuote();
+        quoteElement.textContent = text;
+        authorElement.textContent = `— ${author}`;
         paperOverlay.classList.remove('hidden');
-        
-        // Animar tapa: Rotación de apertura
         lid.style.transform = 'translateX(-50%) rotate(180deg)';
-        
-        console.log('Frase mostrada:', quotes[selectedIndex]);
     } catch (error) {
         console.error('Error al mostrar frase:', error);
-        quoteElement.textContent = 'Algo salió mal... Intenta de nuevo.'; // Fallback graceful
+        quoteElement.textContent = 'Algo salió mal...';
+        authorElement.textContent = '';
         paperOverlay.classList.remove('hidden');
     }
 }
 
-// Función para cerrar overlay y resetear animaciones (clic fuera o en papel)
 function closeOverlay() {
     paperOverlay.classList.add('hidden');
-    lid.style.transform = 'translateX(-50%) rotate(0deg)'; // Cerrar tapa
-    // Reset used? No, mantener hasta agotar
+    lid.style.transform = 'translateX(-50%) rotate(0deg)';
 }
 
-// Event listeners: Soporte para click, touch y keyboard (accesibilidad)
-jar.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevenir comportamientos default
-    showRandomQuote();
-});
-
+jar.addEventListener('click', showQuote);
 jar.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        showRandomQuote();
+        showQuote();
     }
 });
-
-// Cerrar al clic en overlay (fuera del papel)
 paperOverlay.addEventListener('click', closeOverlay);
 
-// Debounce proactivo para clics rápidos (evita spam en móviles, rendimiento)
 let debounceTimer;
-jar.addEventListener('touchstart', (e) => { // Soporte touch para móviles
+jar.addEventListener('touchstart', (e) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        showRandomQuote();
-    }, 300); // 300ms debounce
+        showQuote();
+    }, 300);
 });
-
-// Inicialización: Marcar frases como no usadas si es array plano
-if (quotes[0] && typeof quotes[0] === 'string') {
-    quotes.forEach((q, i) => {
-        quotes[i] = { text: q, used: false };
-    });
-}
-
-console.log('Listeners configurados. Listo para interacción.');
