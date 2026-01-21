@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frasco de Reflexiones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="jar" class="jar" role="button" aria-label="Interactúa con el frasco para revelar una frase" tabindex="0">
+            <!-- Tapa del frasco -->
+            <div class="lid"></div>
+            <!-- Cuerpo del frasco con papeles internos simulados -->
+            <div class="body">
+                <div class="papers"></div>
+            </div>
+        </div>
+        <!-- Overlay para mostrar el papel con frase -->
+        <div id="paper-overlay" class="paper-overlay hidden">
+            <div class="paper">
+                <p id="quote"></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

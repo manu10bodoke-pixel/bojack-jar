@@ -1,0 +1,170 @@
+/* Reset y estilos base para minimalismo */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Fuente simple y limpia */
+    background-color: #f0f0f0; /* Fondo desaturado, melancólico */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Evita scrolls innecesarios */
+}
+
+/* Contenedor centrado */
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Frasco principal: Estilo inspirado en BoJack - líneas suaves, colores planos desaturados */
+.jar {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    cursor: pointer;
+    animation: sway 4s ease-in-out infinite; /* Balanceo sutil constante */
+    transition: transform 0.3s ease; /* Reacción suave al hover/clic */
+}
+
+.jar:hover {
+    transform: scale(1.05); /* Ligero zoom en hover para feedback */
+}
+
+.jar:focus {
+    outline: 2px solid #ccc; /* Accesibilidad para teclado */
+}
+
+/* Tapa: Rectángulo simple con color marrón desaturado */
+.lid {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 20px;
+    background-color: #8B4513; /* Marrón desaturado */
+    border-radius: 5px 5px 0 0;
+    z-index: 3;
+    transition: transform 0.5s ease; /* Animación de apertura */
+}
+
+/* Cuerpo del frasco: Vidrio con reflejo sutil */
+.body {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 250px;
+    background-color: #E0F0FF; /* Azul claro desaturado para vidrio */
+    border: 2px solid #A0C0E0;
+    border-radius: 0 0 20px 20px;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1); /* Reflejo suave interno */
+}
+
+/* Papeles internos: Simulados con pseudo-elementos doblados, visibles inicialmente */
+.papers {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 110px;
+    height: 40px;
+    background-color: #F5DEB3; /* Papel crema desaturado */
+    border-radius: 5px;
+    transform: rotate(-5deg); /* Doblado sutil */
+    opacity: 0.8;
+}
+
+.papers::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: -10px;
+    width: 20px;
+    height: 30px;
+    background-color: #F5DEB3;
+    transform: rotate(10deg);
+    border-radius: 3px;
+}
+
+/* Animación idle: Balanceo ligero del frasco */
+@keyframes sway {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(2deg); }
+}
+
+/* Overlay del papel: Aparece centrado con animación suave */
+.paper-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Overlay semi-transparente melancólico */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.paper-overlay:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.paper {
+    background-color: #F5DEB3;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 80%;
+    text-align: center;
+    animation: unfold 0.8s ease-out; /* Despliegue suave */
+    transform-origin: top;
+}
+
+@keyframes unfold {
+    0% { transform: scaleY(0) rotateX(90deg); opacity: 0; }
+    100% { transform: scaleY(1) rotateX(0deg); opacity: 1; }
+}
+
+#quote {
+    font-size: 18px;
+    color: #333;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+    .jar {
+        width: 150px;
+        height: 225px;
+    }
+    .body {
+        width: 120px;
+        height: 190px;
+    }
+    #quote {
+        font-size: 16px;
+    }
+}
+
+/* Clase hidden para toggle */
+.hidden {
+    display: none;
+}
