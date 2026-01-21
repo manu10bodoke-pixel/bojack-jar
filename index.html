@@ -7,23 +7,33 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="mylivewallpapers.com-Bojack-Horseman.mp4" type="video/mp4">
+    </video>
+
+    <audio id="welcome-audio" src="Cumpleaños de sara.mp3"></audio>
+
     <div class="container">
-        <div id="jar" class="jar" role="button" aria-label="Interactúa con el frasco para revelar una frase" tabindex="0">
-            <!-- Tapa del frasco -->
+        <div id="initial-message" class="initial-message">
+            Feliz cumpleaños, Sara
+        </div>
+
+        <div id="jar" class="jar" tabindex="0">
             <div class="lid"></div>
-            <!-- Cuerpo del frasco con papeles internos simulados -->
             <div class="body">
                 <div class="papers"></div>
             </div>
         </div>
-        <!-- Overlay para mostrar el papel con frase -->
+
         <div id="paper-overlay" class="paper-overlay hidden">
             <div class="paper">
                 <p id="quote"></p>
+                <p id="author" class="author"></p>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-<!-- deploy trigger -->
