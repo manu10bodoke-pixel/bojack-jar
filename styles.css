@@ -1,4 +1,3 @@
-/* Reset y estilos base para minimalismo */
 * {
     margin: 0;
     padding: 0;
@@ -6,16 +5,24 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif; /* Fuente simple y limpia */
-    background-color: #f0f0f0; /* Fondo desaturado, melancólico */
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden; /* Evita scrolls innecesarios */
+    overflow: hidden;
 }
 
-/* Contenedor centrado */
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
 .container {
     position: relative;
     width: 100%;
@@ -23,27 +30,44 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
-/* Frasco principal: Estilo inspirado en BoJack - líneas suaves, colores planos desaturados */
+.initial-message {
+    position: absolute;
+    top: 20%;
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 5;
+    animation: fadeInOut 5s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
 .jar {
     position: relative;
     width: 200px;
     height: 300px;
     cursor: pointer;
-    animation: sway 4s ease-in-out infinite; /* Balanceo sutil constante */
-    transition: transform 0.3s ease; /* Reacción suave al hover/clic */
+    animation: sway 4s ease-in-out infinite;
+    transition: transform 0.3s ease;
+    z-index: 2;
 }
 
 .jar:hover {
-    transform: scale(1.05); /* Ligero zoom en hover para feedback */
+    transform: scale(1.05);
 }
 
 .jar:focus {
-    outline: 2px solid #ccc; /* Accesibilidad para teclado */
+    outline: 2px solid #ccc;
 }
 
-/* Tapa: Rectángulo simple con color marrón desaturado */
 .lid {
     position: absolute;
     top: -10px;
@@ -51,13 +75,12 @@ body {
     transform: translateX(-50%);
     width: 60px;
     height: 20px;
-    background-color: #8B4513; /* Marrón desaturado */
+    background-color: #8B4513;
     border-radius: 5px 5px 0 0;
     z-index: 3;
-    transition: transform 0.5s ease; /* Animación de apertura */
+    transition: transform 0.5s ease;
 }
 
-/* Cuerpo del frasco: Vidrio con reflejo sutil */
 .body {
     position: absolute;
     top: 10px;
@@ -65,23 +88,22 @@ body {
     transform: translateX(-50%);
     width: 150px;
     height: 250px;
-    background-color: #E0F0FF; /* Azul claro desaturado para vidrio */
+    background-color: #E0F0FF;
     border: 2px solid #A0C0E0;
     border-radius: 0 0 20px 20px;
     overflow: hidden;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.1); /* Reflejo suave interno */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Papeles internos: Simulados con pseudo-elementos doblados, visibles inicialmente */
 .papers {
     position: absolute;
     bottom: 20px;
     left: 20px;
     width: 110px;
     height: 40px;
-    background-color: #F5DEB3; /* Papel crema desaturado */
+    background-color: #F5DEB3;
     border-radius: 5px;
-    transform: rotate(-5deg); /* Doblado sutil */
+    transform: rotate(-5deg);
     opacity: 0.8;
 }
 
@@ -97,20 +119,18 @@ body {
     border-radius: 3px;
 }
 
-/* Animación idle: Balanceo ligero del frasco */
 @keyframes sway {
     0%, 100% { transform: rotate(0deg); }
     50% { transform: rotate(2deg); }
 }
 
-/* Overlay del papel: Aparece centrado con animación suave */
 .paper-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5); /* Overlay semi-transparente melancólico */
+    background-color: rgba(0,0,0,0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -132,7 +152,7 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     max-width: 80%;
     text-align: center;
-    animation: unfold 0.8s ease-out; /* Despliegue suave */
+    animation: unfold 0.8s ease-out;
     transform-origin: top;
 }
 
@@ -145,11 +165,21 @@ body {
     font-size: 18px;
     color: #333;
     font-style: italic;
-    margin: 0;
+    margin: 0 0 10px 0;
     line-height: 1.4;
 }
 
-/* Responsive para móviles */
+.author {
+    font-size: 16px;
+    color: #666;
+    text-align: right;
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+
 @media (max-width: 600px) {
     .jar {
         width: 150px;
@@ -162,9 +192,7 @@ body {
     #quote {
         font-size: 16px;
     }
-}
-
-/* Clase hidden para toggle */
-.hidden {
-    display: none;
+    .initial-message {
+        font-size: 24px;
+    }
 }
